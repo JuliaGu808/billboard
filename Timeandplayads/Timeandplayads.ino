@@ -33,7 +33,7 @@ void loop() {
 
 }
 
-playAdHHB()
+void playAdHHB()
 {
   chooseAd = randomize(3);
   if(chooseAd == 1) scrollMessage(HHB1);
@@ -41,12 +41,28 @@ playAdHHB()
   else if (chooseAd == 3) blinkMessage(HHB3);
 }
 
-playAdFAP()
+void playAdFAP()
 {
 chooseAd = randomize(2);
 if(chooseAd = 1) scrollMessage(FAP1);
 else if (chooseAd = 2) printMessage(FAP2);
 }
+
+void playAdSPS()
+{
+  currentMinute = currentMinuteApproximation()
+  if (currentminute % 2 == 0) scrollMessage(SPS1);
+  else scrollMessage(SPS2);
+}
+
+void playAdLD()
+{
+  currentHour = currentHourApproximation()
+  if(currenthour >=6 && currentHour < 17) printMessage(LD1);
+  else printMessage(LD2);
+}
+
+
 
 int currentHourApproximation()
 {
@@ -58,7 +74,7 @@ int currentHourApproximation()
 int currentMinuteApproximation()
 {
   int millisecondsElapsedToday = startHour * hour + startMinute * minute + millis();
-  int minutes = ((millisecondsElapsedToday % day) & hour) / minute;
+  int minutes = ((millisecondsElapsedToday % day) % hour) / minute;
   return minutes;
 }
 
