@@ -22,8 +22,8 @@ KUND firstkund;
 long day = 86400000; 
 long hour = 3600000; 
 long minute = 60000;
-int startHour = 19;
-int startMinute = 42;
+int startHour = 15;
+int startMinute = 40;
 
 int chooseAd = NULL;
 
@@ -53,6 +53,7 @@ void setup() {
   createKundlist();
   firstkund.namn="test";
   firstkund.betalat = 0;
+  firstkund.id = 0;
 }
 
 void createKundlist(){
@@ -214,7 +215,7 @@ void loop() {
     while(true){
       int r = rand() % summaAntalLotter;
       found = checkoutKund(r);
-      if(firstkund.betalat != found.betalat) break;     
+      if(firstkund.id != found.id) break;     
     }
     
     int id = found.id;
