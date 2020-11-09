@@ -146,9 +146,10 @@ void loop() {
     lcd.clear();
     
 }
+void scrollMessage(String msg)
  {
  lcd.setCursor(0,0);
- lcd.print(HHB1);
+ lcd.print(msg);
  lcd.scrollDisplayLeft();
  delay(500);
  
