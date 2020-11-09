@@ -155,12 +155,14 @@ int randomize(int range)
 
 void scrollMessage(String msg)
  {
+  long displaystarttime=millis();
+ while (millis()<displaystarttime+20000){
  lcd.setCursor(0,0);
  lcd.print(msg);
  lcd.scrollDisplayLeft();
  delay(500);
- 
- }
+  }
+}
 
  void blinkMessage(String message){
   long displaystarttime=millis();
