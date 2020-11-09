@@ -144,4 +144,5 @@ void loop() {
     lcd.print(found.namn);
     delay(3000);
     lcd.clear();
+    
 }
