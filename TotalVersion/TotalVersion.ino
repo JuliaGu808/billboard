@@ -95,35 +95,40 @@ KUND checkoutKund(int lotter){
 
 void playAdHHB()
 {
-  lcd.print("hhb");
+  //lcd.print("hhb");
   chooseAd = randomize(3);
-//  if(chooseAd == 1) scrollMessage(HHB1);
-//  else if (chooseAd == 2) printMessage(HHB2);
-//  else if (chooseAd == 3) blinkMessage(HHB3);
+  if(chooseAd == 1) scrollMessage(HHB1);
+  else if (chooseAd == 2) printMessage(HHB2);
+  else if (chooseAd == 3) blinkMessage(HHB3);
 }
 
 void playAdFAP()
 {
-  lcd.print("fap");
+ 
+  //lcd.print("fap");
 chooseAd = randomize(2);
-//if(chooseAd = 1) scrollMessage(FAP1);
-//else if (chooseAd = 2) printMessage(FAP2);
+if(chooseAd = 1) scrollMessage(FAP1);
+else if (chooseAd = 2) printMessage(FAP2);
 }
 
 void playAdSPS()
 {
-  lcd.print("sps");
-//  currentMinute = currentMinuteApproximation()
- // if (currentminute % 2 == 0) scrollMessage(SPS1);
- // else scrollMessage(SPS2);
+  //lcd.print("sps");
+  long currentMinute = currentMinuteApproximation();
+  if (currentMinute % 2 == 0) scrollMessage(SPS1);
+  else scrollMessage(SPS2);
 }
+void printMessage(String message){
+  lcd.print(message);
+}
+
 
 void playAdLD()
 {
-  lcd.print("dld");
-//  currentHour = currentHourApproximation()
-  //if(currenthour >=6 && currentHour < 17) printMessage(LD1);
- // else printMessage(LD2);
+ // lcd.print("dld");
+  long currentHour = currentHourApproximation();
+  if(currentHour >=6 && currentHour < 17) printMessage(LD1);
+  else printMessage(LD2);
 }
 
 
@@ -148,13 +153,33 @@ int randomize(int range)
   return r+1;
 }
 
+void scrollMessage(String msg)
+ {
+ lcd.setCursor(0,0);
+ lcd.print(msg);
+ lcd.scrollDisplayLeft();
+ delay(500);
+ 
+ }
+
+ void blinkMessage(String message){
+  long displaystarttime=millis();
+  while (millis()<displaystarttime+20000){
+  lcd.print(message);
+  delay(750);
+  lcd.clear();
+  delay(500);
+  }
+}
+
+
 void loop() {
  int summaAntalLotter = 0;
   for(int i = 0; i < 4; i++){
     summaAntalLotter += kundlist[i].betalat;
   }
 
-  if(millis()-starttime > 5000){
+  if(millis()-starttime > 20000){
     lcd.clear();
     starttime = millis();
     KUND found;
