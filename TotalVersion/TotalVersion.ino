@@ -5,13 +5,17 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 char inData[30];
 char inChar;
 int charIndex;
+long starttime = 0;
+int first = 0;
 
 struct KUND {
+  int id;
   String namn;
   int betalat;
 };
 
 KUND kundlist[4];
+KUND firstkund;
 
 long day = 86400000; 
 long hour = 3600000; 
@@ -43,22 +47,28 @@ String LD2 = "Langben fixar biffen";
 void setup() {
   lcd.begin(16, 2);
   createKundlist();
+  firstkund.namn="test";
+  firstkund.betalat = 0;
 }
 
 void createKundlist(){
    KUND harry;
+   harry.id=1;
   harry.namn = "Hederlige Harrys Bilar";
   harry.betalat = 5000; // 0-5000
 
   KUND anka;
+  anka.id=2;
   anka.namn = "Farmor Ankas Pajer AB";
   anka.betalat = 3000;  // 5001-8001
 
   KUND peter;
+  peter.id=3;
   peter.namn = "Svarte Petters Svartbyggen";
   peter.betalat = 1500; // 8002-9502
 
   KUND ben;
+  ben.id=4;
   ben.namn = "Langbens detektivbyra";
   ben.betalat = 4000;  // 9503-13503
 
@@ -85,6 +95,7 @@ KUND checkoutKund(int lotter){
 
 void playAdHHB()
 {
+  lcd.print("hhb");
   chooseAd = randomize(3);
 //  if(chooseAd == 1) scrollMessage(HHB1);
 //  else if (chooseAd == 2) printMessage(HHB2);
@@ -93,6 +104,7 @@ void playAdHHB()
 
 void playAdFAP()
 {
+  lcd.print("fap");
 chooseAd = randomize(2);
 //if(chooseAd = 1) scrollMessage(FAP1);
 //else if (chooseAd = 2) printMessage(FAP2);
@@ -100,6 +112,7 @@ chooseAd = randomize(2);
 
 void playAdSPS()
 {
+  lcd.print("sps");
 //  currentMinute = currentMinuteApproximation()
  // if (currentminute % 2 == 0) scrollMessage(SPS1);
  // else scrollMessage(SPS2);
@@ -107,6 +120,7 @@ void playAdSPS()
 
 void playAdLD()
 {
+  lcd.print("dld");
 //  currentHour = currentHourApproximation()
   //if(currenthour >=6 && currentHour < 17) printMessage(LD1);
  // else printMessage(LD2);
@@ -139,9 +153,34 @@ void loop() {
   for(int i = 0; i < 4; i++){
     summaAntalLotter += kundlist[i].betalat;
   }
-  int r = rand() % summaAntalLotter;
-  KUND found = checkoutKund(r);
-    lcd.print(found.namn);
-    delay(3000);
+
+  if(millis()-starttime > 5000){
     lcd.clear();
+    starttime = millis();
+    KUND found;
+    while(true){
+      int r = rand() % summaAntalLotter;
+      found = checkoutKund(r);
+      if(firstkund.betalat != found.betalat) break;     
+    }
+    
+    int id = found.id;
+    switch(id){
+      case 1:
+        playAdHHB();
+        break;
+      case 2:
+        playAdFAP();
+        break;
+      case 3:
+        playAdSPS();
+        break;
+      case 4:
+        playAdLD();
+        break;
+    }
+    firstkund = found;
+    
+  }
+  
 }
