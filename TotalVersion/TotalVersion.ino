@@ -8,6 +8,8 @@ int charIndex;
 long starttime = 0;
 int first = 0;
 
+int timedisplayed = 3000;
+
 struct KUND {
   int id;
   String namn;
@@ -20,14 +22,16 @@ KUND firstkund;
 long day = 86400000; 
 long hour = 3600000; 
 long minute = 60000;
-int startHour = 0;
-int startMinute = 0;
+int startHour = 19;
+int startMinute = 42;
 
 int chooseAd = NULL;
 
 //ADS
 
 //Hederlige Harrys Bilar
+//String HHB11 = "Kop bil";
+//String HHB12 = "hos Harry";
 String HHB1 = "Kop bil hos Harry";
 String HHB2 = "En god bilaffar for harry!";
 String HHB3 = "Hederlige Harrys bilar";
@@ -119,7 +123,20 @@ void playAdSPS()
   else scrollMessage(SPS2);
 }
 void printMessage(String message){
+   if (message.length()<17)
   lcd.print(message);
+  else {
+    if (message.substring(16)==" "){
+    lcd.print(message);
+    lcd.setCursor(0,1);
+    lcd.print(message.substring(16));}
+    else {
+      int index=message.lastIndexOf(" ", 16);
+      lcd.print(message.substring(0,index));
+      lcd.setCursor(0, 1);
+      lcd.print(message.substring(index+1));
+    }
+  }
 }
 
 
@@ -127,23 +144,23 @@ void playAdLD()
 {
  // lcd.print("dld");
   long currentHour = currentHourApproximation();
-  if(currentHour >=6 && currentHour < 17) printMessage(LD1);
-  else printMessage(LD2);
+  if(currentHour >=6 && currentHour < 17) printMessage(LD2);
+  else printMessage(LD1);
 }
 
 
 
-int currentHourApproximation()
+long currentHourApproximation()
 {
-  int millisecondsElapsedToday = startHour * hour + startMinute * minute + millis();
-  int hours = (millisecondsElapsedToday % day) / hour;
+  long millisecondsElapsedToday = startHour * hour + startMinute * minute + millis();
+  long hours = millisecondsElapsedToday  / hour;
   return hours;
 }
 
-int currentMinuteApproximation()
+long currentMinuteApproximation()
 {
-  int millisecondsElapsedToday = startHour * hour + startMinute * minute + millis();
-  int minutes = ((millisecondsElapsedToday % day) % hour) / minute;
+  long millisecondsElapsedToday = startHour * hour + startMinute * minute + millis();
+  long minutes = ((millisecondsElapsedToday % day) % hour) / minute;
   return minutes;
 }
 
@@ -155,31 +172,42 @@ int randomize(int range)
 
 void scrollMessage(String msg)
  {
- lcd.setCursor(0,0);
+
+  lcd.setCursor(17, 0);
  lcd.print(msg);
- lcd.scrollDisplayLeft();
- delay(500);
- 
+ long displaystarttime=millis();
+  for (int i = 0; i < 40; i++)
+    {
+      if(millis()>displaystarttime+timedisplayed){
+       break; 
+      }
+      lcd.scrollDisplayLeft();
+      delay(200);
+    }
+    lcd.clear(); 
  }
+ 
 
  void blinkMessage(String message){
   long displaystarttime=millis();
-  while (millis()<displaystarttime+20000){
-  lcd.print(message);
+  while (millis()<displaystarttime+timedisplayed){
+     printMessage(message);
   delay(750);
   lcd.clear();
   delay(500);
+  
   }
 }
 
 
 void loop() {
+  
  int summaAntalLotter = 0;
   for(int i = 0; i < 4; i++){
     summaAntalLotter += kundlist[i].betalat;
   }
 
-  if(millis()-starttime > 20000){
+  if(millis()-starttime > timedisplayed){
     lcd.clear();
     starttime = millis();
     KUND found;
