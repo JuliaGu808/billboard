@@ -1,14 +1,20 @@
+#include <LCDBitmap.h>
 #include <LiquidCrystal.h>
 
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+LCDBitmap bitmap(&lcd, 0, 0);  // Set the bitmap to the &lcd display at character position 0,0.
+
+byte graph[20];
+byte bars[] = { 1, 2, 4, 5, 10, 20 };
+
 char inData[30];
 char inChar;
 int charIndex;
 long starttime = 0;
 int first = 0;
 
-int timedisplayed = 3000;
+int timedisplayed = 6000;
 
 struct KUND {
   int id;
@@ -16,7 +22,7 @@ struct KUND {
   int betalat;
 };
 
-KUND kundlist[4];
+KUND kundlist[5];
 KUND firstkund;
 
 long day = 86400000; 
@@ -54,6 +60,10 @@ void setup() {
   firstkund.namn="test";
   firstkund.betalat = 0;
   firstkund.id = 0;
+  
+  
+  
+
 }
 
 void createKundlist(){
@@ -77,10 +87,16 @@ void createKundlist(){
   ben.namn = "Langbens detektivbyra";
   ben.betalat = 4000;  // 9503-13503
 
+  KUND iot;
+  iot.id=5;
+  iot.namn = "iot";
+  iot.betalat = 1000;  // 13504-14504
+
   kundlist[0] = harry;
   kundlist[1] = anka;
   kundlist[2] = peter;
   kundlist[3] = ben;
+  kundlist[4] = iot;
 }
 
 KUND checkoutKund(int lotter){
@@ -93,8 +109,11 @@ KUND checkoutKund(int lotter){
   else if(lotter >= 8002 && lotter <= 9502){
     return kundlist[2];
   }
-  else{
+  else if(lotter >= 9503 && lotter <= 13503){
     return kundlist[3];
+  }
+  else{
+    return kundlist[4];
   }
 }
 
@@ -200,11 +219,93 @@ void scrollMessage(String msg)
   }
 }
 
+void playIOT(){
+  lcd.setCursor(5, 0);
+  lcd.print("IOT 20");
+  bitmap.begin();  // Then initialize the LCD bitmap.
+  long displaystarttime=millis();
+  while (millis()<displaystarttime+timedisplayed){
+   byte curr_bars = bars[(millis()/3000)%6];
+    for (byte x=0; x<curr_bars; x++) {
+    graph[x] = random(0, BITMAP_H+1);
+    }
+  
+    bitmap.barGraph(curr_bars, graph, ON, UPDATE);  // Display the bar graph.
+    delay(50);
+  }
+}
+
+void athinaBlinkMessage(String message){
+  long displaystarttime=millis();
+  while (millis()<displaystarttime+timedisplayed){
+    lcd.clear();
+    displayMessage(message);
+    delay(750);
+    lcd.clear();
+    delay(500);
+  }
+}
+
+void displayMessage (String message){
+  if(message.length()<17)
+    lcd.print(message);
+  else if (message.length()<32 && message.substring(16)==" "){
+    lcd.print(message);
+    lcd.setCursor(0,1);
+    lcd.print(message.substring(16));
+  }
+  else if (message.length()<32 && message.substring(16)!=" "){
+    int index=message.lastIndexOf(" ", 16);
+    lcd.print(message.substring(0,index));
+    lcd.setCursor(0, 1);
+    lcd.print(message.substring(index+1));
+  }
+  else{
+    int index=message.indexOf(" ");
+    lcd.print(message.substring(0,index));
+    delay(2000);
+    lcd.clear(); 
+    int breakIndex=message.lastIndexOf(" ", 16+index);
+    lcd.print(message.substring(index+1,breakIndex));
+    lcd.setCursor(0, 1);
+    lcd.print(message.substring(breakIndex+1));
+    delay(2000);
+    lcd.clear();
+  }
+}
+
+void athinaPrintMessage(String message){
+  lcd.clear();
+  long displaystarttime=millis();
+  while (millis()<displaystarttime+timedisplayed){
+    lcd.setCursor(0,0);
+    displayMessage(message);
+  }
+}
+
+void athinaScrollMessage(String message){
+  lcd.clear();
+  long displaystarttime=millis();
+  while (millis()<displaystarttime+timedisplayed){
+    lcd.setCursor(15,0);
+    lcd.print(message);
+    lcd.scrollDisplayLeft();
+    delay(300);
+  }
+}
+
 
 void loop() {
+
+//  athinaBlinkMessage("hello world 1, IOT 20");
+//  delay(3000);
+//  athinaPrintMessage("hello world 2");
+//  delay(3000);
+//  athinaScrollMessage("hello world 3");
+//  delay(3000);
   
  int summaAntalLotter = 0;
-  for(int i = 0; i < 4; i++){
+  for(int i = 0; i < 5; i++){
     summaAntalLotter += kundlist[i].betalat;
   }
 
@@ -231,6 +332,9 @@ void loop() {
         break;
       case 4:
         playAdLD();
+        break;
+      case 5:
+        playIOT();
         break;
     }
     firstkund = found;
