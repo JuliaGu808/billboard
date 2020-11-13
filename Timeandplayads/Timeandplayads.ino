@@ -68,6 +68,8 @@ void createKundlist(){
   kundlist[3] = ben;
 }
 
+<<<<<<< HEAD
+=======
 KUND checkoutKund(int lotter){
   if(lotter >= 0 && lotter <= 5000){
     return kundlist[0];
@@ -83,6 +85,7 @@ KUND checkoutKund(int lotter){
   }
 }
 
+>>>>>>> main
 void playAdHHB()
 {
   chooseAd = randomize(3);
@@ -100,16 +103,28 @@ chooseAd = randomize(2);
 
 void playAdSPS()
 {
+<<<<<<< HEAD
+  currentMinute = currentMinuteApproximation()
+  if (currentminute % 2 == 0) scrollMessage(SPS1);
+  else scrollMessage(SPS2);
+=======
 //  currentMinute = currentMinuteApproximation()
  // if (currentminute % 2 == 0) scrollMessage(SPS1);
  // else scrollMessage(SPS2);
+>>>>>>> main
 }
 
 void playAdLD()
 {
+<<<<<<< HEAD
+  currentHour = currentHourApproximation()
+  if(currenthour >=6 && currentHour < 17) printMessage(LD1);
+  else printMessage(LD2);
+=======
 //  currentHour = currentHourApproximation()
   //if(currenthour >=6 && currentHour < 17) printMessage(LD1);
  // else printMessage(LD2);
+>>>>>>> main
 }
 
 
