@@ -366,7 +366,8 @@ void loop() {
       inData[charIndex] = inChar;
       charIndex++;
       inData[charIndex] = '\0';
-    }   
+    } 
+    lcd.clear();  
   }
 
     if (inData[0]=='s') {  //sänk -> s:1:1500:
@@ -391,24 +392,22 @@ void loop() {
 
       changeKundBetal(kundid, betal);
       inData[0]='\0';
-  }
-
-
-
-  
- int summaAntalLotter = 0;
-  for(int i = 0; i < sizeof(kundlist)/sizeof(KUND); i++){
-    summaAntalLotter += kundlist[i].betalat;
-  }
-    if(millis()-starttime > timedisplayed){
-    lcd.clear();
-    starttime = millis();
-    KUND found;
-    while(true){
-      int r = rand() % summaAntalLotter;
-      found = checkoutKund(r);
-      if(firstkund.id != found.id) break;     
     }
+
+    if (inData[0]=='a') {  //add reklam -> a:
+        int summaAntalLotter = 0;
+        for(int i = 0; i < sizeof(kundlist)/sizeof(KUND); i++){
+          summaAntalLotter += kundlist[i].betalat;
+        }
+      if(millis()-starttime > timedisplayed){
+      lcd.clear();
+      starttime = millis();
+      KUND found;
+      while(true){
+        int r = rand() % summaAntalLotter;
+        found = checkoutKund(r);
+        if(firstkund.id != found.id) break;     
+      }
     
     int id = found.id;
     int msgNum = 1;
@@ -442,5 +441,16 @@ void loop() {
         break;
     }
     firstkund = found;
-  }  
+    }  
+      
+      inData[0]='a';
+  }
+  if (inData[0]=='b'){ //b -> brand
+    lcd.clear();
+    String message= "BRANDLARM UTRYM SNARAST";
+    displayMessage(message);    
+    delay(300);
+    //inData[0]='a';
+  }
+  
 }
