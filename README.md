@@ -1,6 +1,6 @@
 # billboard
 
-## Grupp projekt: kör Arduino LCD att visa olika meddelande
+## Grupp projekt: Visual Studio skicka info till Arduino att låta LCD visa olika meddelande, tänd lampa eller alarm
 
 Måndags kolla TotalVersion folder
 Fredags kolla ExtraVersion folder
