@@ -391,24 +391,22 @@ void loop() {
 
       changeKundBetal(kundid, betal);
       inData[0]='\0';
-  }
-
-
-
-  
- int summaAntalLotter = 0;
-  for(int i = 0; i < sizeof(kundlist)/sizeof(KUND); i++){
-    summaAntalLotter += kundlist[i].betalat;
-  }
-    if(millis()-starttime > timedisplayed){
-    lcd.clear();
-    starttime = millis();
-    KUND found;
-    while(true){
-      int r = rand() % summaAntalLotter;
-      found = checkoutKund(r);
-      if(firstkund.id != found.id) break;     
     }
+
+    if (inData[0]=='a') {  //add reklam -> a:
+        int summaAntalLotter = 0;
+        for(int i = 0; i < sizeof(kundlist)/sizeof(KUND); i++){
+          summaAntalLotter += kundlist[i].betalat;
+        }
+      if(millis()-starttime > timedisplayed){
+      lcd.clear();
+      starttime = millis();
+      KUND found;
+      while(true){
+        int r = rand() % summaAntalLotter;
+        found = checkoutKund(r);
+        if(firstkund.id != found.id) break;     
+      }
     
     int id = found.id;
     int msgNum = 1;
@@ -442,5 +440,64 @@ void loop() {
         break;
     }
     firstkund = found;
-  }  
+    }  
+      
+      inData[0]='\0';
+  }
+  if (inData[0]=='b'){ //b -> brand
+    displayMessage("brand");
+  }
+
+
+
+
+
+  
+// int summaAntalLotter = 0;
+//  for(int i = 0; i < sizeof(kundlist)/sizeof(KUND); i++){
+//    summaAntalLotter += kundlist[i].betalat;
+//  }
+//    if(millis()-starttime > timedisplayed){
+//    lcd.clear();
+//    starttime = millis();
+//    KUND found;
+//    while(true){
+//      int r = rand() % summaAntalLotter;
+//      found = checkoutKund(r);
+//      if(firstkund.id != found.id) break;     
+//    }
+//    
+//    int id = found.id;
+//    int msgNum = 1;
+//    int betalning = found.betalat;
+//    
+//    if(betalning >= 5000){
+//      msgNum = 3;
+//    }
+//    else{
+//      msgNum = 2;
+//    }
+//       
+//    switch(id){
+//      case 1:
+//        playAdHHB(msgNum);
+//        break;
+//      case 2:
+//        playAdFAP();
+//        break;
+//      case 3:
+//        playAdSPS();
+//        break;
+//      case 4:
+//        playAdLD();
+//        break;
+//      case 5:
+//        playIOT();
+//        break;
+//      case 6:
+//        playAdY();
+//        break;
+//    }
+//    firstkund = found;
+//  }  
 }
