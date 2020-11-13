@@ -56,12 +56,13 @@ String LD1 = "Mysterier? Ring Langben";
 String LD2 = "Langben fixar biffen";
 
 //Yrrol AB
-String Y1 = "T-Rod - för dig som tankt klart";
-String Y2 = "Claes Månsson - om flickan sjalv far valja";
+String Y1 = "T-Rod - for dig som tankt klart";
+String Y2 = "Claes Mansson - om flickan sjalv far valja";
 int adLength = 3000; //in milliseconds
 
 void setup() {
   lcd.begin(16, 2);
+  Serial.begin(9600);
   createKundlist();
   firstkund.namn="test";
   firstkund.betalat = 0;
@@ -73,7 +74,7 @@ void createKundlist(){
    KUND harry;
    harry.id=1;
   harry.namn = "Hederlige Harrys Bilar";
-  harry.betalat = 1500; // 0-5000
+    harry.betalat = 5000; // 0-5000
 
   KUND anka;
   anka.id=2;
@@ -112,25 +113,27 @@ KUND checkoutKund(int lotter){
     int i,min=0;
   for (i=0;i<sizeof(kundlist)/sizeof(KUND);i++){
     if ((min<=lotter) && lotter<(min+kundlist[i].betalat))
-      return kundlist[i+1];
+      return kundlist[i];
     else
       min+=kundlist[i].betalat+1;
   }
 }
 
-void playAdHHB()
+void playAdHHB(int num)
 {
-  chooseAd = randomize(3);
+  Serial.print(num);
+  chooseAd = randomize(num);
+  
   if(chooseAd == 1) adFX(HHB1,"scroll",false);
   else if (chooseAd == 2) adFX(HHB2,"print",false);
-  else if (chooseAd == 3) adFX(HHB3,"blink",false);
+  else if (chooseAd == 3) adFX(HHB3,"blink",true);
 }
 
 void playAdFAP()
 {
   chooseAd = randomize(2);
-  if(chooseAd = 1) adFX(FAP1,"scroll",false);
-  else if (chooseAd = 2) adFX(FAP2,"print",false);
+  if(chooseAd == 1) adFX(FAP1,"scroll",false);
+  else if (chooseAd == 2) adFX(FAP2,"print",false);
 }
 
 void playAdSPS()
@@ -150,8 +153,8 @@ void playAdLD()
 void playAdY() //the new ad.
 {
   chooseAd = randomize(2);
-  if(chooseAd = 1) adFX(Y1,"blink",true);
-  else if (chooseAd = 2) adFX(Y2,"scroll",true);
+  if(chooseAd == 1) adFX(Y1,"blink",true);
+  else if (chooseAd == 2) adFX(Y2,"scroll",true);
 }
 
 void adFX(String message,String textEffect,bool ledEffect)
@@ -228,6 +231,7 @@ void adFX(String message,String textEffect,bool ledEffect)
         lcd.setCursor(16,0);
         lcd.print(message);
       }
+      
       if(millis() > scrollMessageTimer + 300)
       {
         lcd.scrollDisplayLeft();
@@ -333,6 +337,14 @@ void athinaScrollMessage(String message){
   }
 }
 
+void changeKundBetal(char* id, char* betala){
+    for (int i=0;i<sizeof(kundlist)/sizeof(KUND);i++){
+    if (kundlist[i].id == atoi(id)){
+      kundlist[i].betalat = atoi(betala);
+      return;
+    }
+  }
+}
 
 void loop() {
 //digitalWrite(bluePin, HIGH);
@@ -342,13 +354,53 @@ void loop() {
 //  delay(3000);
 //  athinaScrollMessage("hello world 3");
 //  delay(3000);
+
+  char inChar;
+  char inData[30];
+  int charIndex=0;
+  while (Serial.available()) {
+      if(charIndex < 29)
+    {
+      delay(2);  //delay to allow byte to arrive in input buffer
+      inChar = Serial.read();
+      inData[charIndex] = inChar;
+      charIndex++;
+      inData[charIndex] = '\0';
+    }   
+  }
+
+    if (inData[0]=='s') {  //sänk -> s:1:1500:
+      char* ptr = NULL;
+      byte index = 0;
+      char* kundid;
+      char* betal;
+      ptr = strtok(inData, ":");
+      while (ptr != NULL)
+      {
+        if(index==1)
+        {
+          kundid=ptr;
+        }
+        if(index==2)
+        {
+          betal=ptr;
+        }
+        index++;
+        ptr = strtok(NULL, ":");
+      }
+
+      changeKundBetal(kundid, betal);
+      inData[0]='\0';
+  }
+
+
+
   
  int summaAntalLotter = 0;
   for(int i = 0; i < sizeof(kundlist)/sizeof(KUND); i++){
     summaAntalLotter += kundlist[i].betalat;
   }
-
-  if(millis()-starttime > timedisplayed){
+    if(millis()-starttime > timedisplayed){
     lcd.clear();
     starttime = millis();
     KUND found;
@@ -359,9 +411,19 @@ void loop() {
     }
     
     int id = found.id;
+    int msgNum = 1;
+    int betalning = found.betalat;
+    
+    if(betalning >= 5000){
+      msgNum = 3;
+    }
+    else{
+      msgNum = 2;
+    }
+       
     switch(id){
       case 1:
-        playAdHHB();
+        playAdHHB(msgNum);
         break;
       case 2:
         playAdFAP();
