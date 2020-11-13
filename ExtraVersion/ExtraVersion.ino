@@ -42,7 +42,7 @@ int chooseAd = NULL;
 
 //Hederlige Harrys Bilar
 String HHB1 = "Kop bil hos Harry";
-String HHB2 = "En god bilaffär for harry!";
+String HHB2 = "En god bilaffar for harry!";
 String HHB3 = "Hederlige Harrys bilar";
 
 //Farmor ankas pajer AB
@@ -59,7 +59,7 @@ String LD2 = "Langben fixar biffen";
 
 //Yrrol AB
 String Y1 = "T-Rod - for dig som tankt klart";
-String Y2 = "Claes Manssön - om flickan sjalv far valja";
+String Y2 = "Claes Mansson - om flickan sjalv far valja";
 int adLength = 3000; //in milliseconds
 
 void setup() {
