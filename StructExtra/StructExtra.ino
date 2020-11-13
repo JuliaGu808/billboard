@@ -85,20 +85,24 @@ byte BigOwithDots[8] = {  //Ö
   0b00000
 };
 
-
-
-
 struct KUND {
   int id;
   String namn;
   int betalat;
-  ANNANS annans[5];
 };
 
-struct ANNANS{
-  String msg;
-  String typ;
-}
+//struct KUND {
+//  int id;
+//  String namn;
+//  int betalat;
+//  ANNANS annans[5];
+//};
+//
+//struct ANNANS{
+//  String msg;
+//  String typ;
+//}
+
 KUND kundlist[6];
 KUND firstkund;
 
@@ -113,24 +117,24 @@ int chooseAd = NULL;
 //ADS
 
 //Hederlige Harrys Bilar
-String HHB1 = "Kop bil hos Harry";
+String HHB1 = "Köp bil hos Harry";
 String HHB2 = "En god bilaffär for harry!";
-String HHB3 = "Hederlige Harrys bilar";
+String HHB3 = "Hederlige Härrys bilar";
 
 //Farmor ankas pajer AB
-String FAP1 = "Kop paj hos Farmar Anka";
-String FAP2 = "Skynda! Innan Marten atit alla pajer";
+String FAP1 = "Köp paj hos Farmar Anka";
+String FAP2 = "Skynda! Innan Mårten atit alla pajer";
 
 //Svarte Petters Svartbyggen
-String SPS1 = "Lat Petter bygga at dig";
-String SPS2 = "Bygga svart? Ring Petter";
+String SPS1 = "Lat Petter bygga åt dig";
+String SPS2 = "Bygga svärt? Ring Petter";
 
 //Långbens Detektivbyrå
-String LD1 = "Mysterier? Ring Langben";
-String LD2 = "Langben fixar biffen";
+String LD1 = "Mysterier? Ring Långben";
+String LD2 = "Långben fixar biffen";
 
 //Yrrol AB
-String Y1 = "T-Rod - for dig som tankt klart";
+String Y1 = "T-Rod - for dig som tänkt klart";
 String Y2 = "Claes Manssön - om flickan sjalv far valja";
 int adLength = 3000; //in milliseconds
 
@@ -144,29 +148,10 @@ void setup() {
   pinMode(led, OUTPUT); 
 pinMode(buzzer, OUTPUT); // Set buzzer - pin 9 as an output
   createSwe();
-
-//  lcd.createChar(1, AwithRing);     //å
-//  lcd.createChar(2, AwithDots);     //ä
-//  lcd.createChar(3, OwithDots);     //ö
-//  lcd.createChar(4, BigAwithRing);  //Å
-//  lcd.createChar(5, BigAwithDots);  //Ä
-//  lcd.createChar(6, BigOwithDots);  //Ö
-
-//  String mm = "åäö - ÅÄÖ - öäå";
-//  mm.replace("å", "\1");
-//  mm.replace("ä", "\2");
-//  mm.replace("ö", "\3");
-//  mm.replace("Å", "\4");
-//  mm.replace("Ä", "\5");
-//  mm.replace("Ö", "\6");
-// 
-//  lcd.setCursor(0, 1);
-//  lcd.print(mm);
-  
 }
 
 void createSwe(){
-    lcd.createChar(1, AwithRing);     //å
+  lcd.createChar(1, AwithRing);     //å
   lcd.createChar(2, AwithDots);     //ä
   lcd.createChar(3, OwithDots);     //ö
   lcd.createChar(4, BigAwithRing);  //Å
@@ -180,8 +165,8 @@ void createKundlist(){
    harry.id=1;
   harry.namn = "Hederlige Harrys Bilar";
     harry.betalat = 5000; // 0-5000
-    harry.annans[0].msg="   "
-    harry.annans[0].typ="blink"
+//    harry.annans[0].msg="xxxx"
+//    harry.annans[0].typ="blink"
 
   KUND anka;
   anka.id=2;
@@ -266,97 +251,96 @@ void playAdY() //the new ad.
 
 void adFX(String message,String textEffect,bool ledEffect)
 {
-//  message.replace("å", "\1");
-//  message.replace("ä", "\2");
-//  message.replace("ö", "\3");
-//  message.replace("Å", "\4");
-//  message.replace("Ä", "\5");
-//  message.replace("Ö", "\6");
-//  // lcd.setCursor(0, 1);
-//  lcd.print(message);
+  message.replace("å", "\1");
+  message.replace("ä", "\2");
+  message.replace("ö", "\3");
+  message.replace("Å", "\4");
+  message.replace("Ä", "\5");
+  message.replace("Ö", "\6");
+  lcd.print(message);
 
   
-  digitalWrite(led, LOW);
-  ledOn = false;
-  bool messagePrinted = false;
-  bool messageDisplayed = false;
-  long adTimer = millis();
-  long ledEffectTimer = adTimer;
-  long blinkMessageTimer = adTimer;
-  long scrollMessageTimer = adTimer;
-  int ledBlinkFrequency = 500;
-  int scrollindex = 0;
-  int scrollLength = message.length()+16;
-
-  while(millis() - adTimer < adLength)
-  {
-    //blinkLed
-    if (ledEffect == true) //blinkLed();
-    {
-      if (millis() > ledEffectTimer + ledBlinkFrequency) 
-      {
-        if (ledOn == false)
-        {
-          digitalWrite(led, HIGH);
-          ledOn = !ledOn;
-        }
-        if(ledOn == true)
-        {
-          digitalWrite(led, LOW);
-          ledOn = !ledOn;
-        }
-        ledEffectTimer = millis();
-      }
-    }
-
-    //printMessage
-    if (textEffect == "print" && messagePrinted == false)
-    {
-      displayMessage(message);
-      messagePrinted = true;
-    }
-
-    //blinkMessage
-    else if (textEffect == "blink")
-    {
-      if(millis() > blinkMessageTimer + 1000 && messageDisplayed == true)
-      {
-        lcd.clear();
-        messageDisplayed = false;
-        blinkMessageTimer=millis();
-      }
-      else if(millis() > blinkMessageTimer + 500 && messageDisplayed == false)
-      {
-        displayMessage(message);
-        messageDisplayed = true;
-        blinkMessageTimer=millis();
-      }
-    }
-//scrollMessage
-    else if (textEffect == "scroll")
-    {
-      if(messageDisplayed==false)
-      {
-        lcd.setCursor(16,0);
-        lcd.print(message);
-        messageDisplayed=true;
-      }
-      if(scrollindex == scrollLength)
-      {
-        scrollindex = 0;
-        lcd.clear();
-        lcd.setCursor(16,0);
-        lcd.print(message);
-      }
-      
-      if(millis() > scrollMessageTimer + 300)
-      {
-        lcd.scrollDisplayLeft();
-        scrollMessageTimer = millis();
-        scrollindex++;
-      }
-    }
-  }
+//  digitalWrite(led, LOW);
+//  ledOn = false;
+//  bool messagePrinted = false;
+//  bool messageDisplayed = false;
+//  long adTimer = millis();
+//  long ledEffectTimer = adTimer;
+//  long blinkMessageTimer = adTimer;
+//  long scrollMessageTimer = adTimer;
+//  int ledBlinkFrequency = 500;
+//  int scrollindex = 0;
+//  int scrollLength = message.length()+16;
+//
+//  while(millis() - adTimer < adLength)
+//  {
+//    //blinkLed
+//    if (ledEffect == true) //blinkLed();
+//    {
+//      if (millis() > ledEffectTimer + ledBlinkFrequency) 
+//      {
+//        if (ledOn == false)
+//        {
+//          digitalWrite(led, HIGH);
+//          ledOn = !ledOn;
+//        }
+//        if(ledOn == true)
+//        {
+//          digitalWrite(led, LOW);
+//          ledOn = !ledOn;
+//        }
+//        ledEffectTimer = millis();
+//      }
+//    }
+//
+//    //printMessage
+//    if (textEffect == "print" && messagePrinted == false)
+//    {
+//      displayMessage(message);
+//      messagePrinted = true;
+//    }
+//
+//    //blinkMessage
+//    else if (textEffect == "blink")
+//    {
+//      if(millis() > blinkMessageTimer + 1000 && messageDisplayed == true)
+//      {
+//        lcd.clear();
+//        messageDisplayed = false;
+//        blinkMessageTimer=millis();
+//      }
+//      else if(millis() > blinkMessageTimer + 500 && messageDisplayed == false)
+//      {
+//        displayMessage(message);
+//        messageDisplayed = true;
+//        blinkMessageTimer=millis();
+//      }
+//    }
+////scrollMessage
+//    else if (textEffect == "scroll")
+//    {
+//      if(messageDisplayed==false)
+//      {
+//        lcd.setCursor(16,0);
+//        lcd.print(message);
+//        messageDisplayed=true;
+//      }
+//      if(scrollindex == scrollLength)
+//      {
+//        scrollindex = 0;
+//        lcd.clear();
+//        lcd.setCursor(16,0);
+//        lcd.print(message);
+//      }
+//      
+//      if(millis() > scrollMessageTimer + 300)
+//      {
+//        lcd.scrollDisplayLeft();
+//        scrollMessageTimer = millis();
+//        scrollindex++;
+//      }
+//    }
+//  }
 }
 
 long currentHourApproximation()
