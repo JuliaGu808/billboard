@@ -92,8 +92,13 @@ struct KUND {
   int id;
   String namn;
   int betalat;
+  ANNANS annans[5];
 };
 
+struct ANNANS{
+  String msg;
+  String typ;
+}
 KUND kundlist[6];
 KUND firstkund;
 
@@ -175,6 +180,8 @@ void createKundlist(){
    harry.id=1;
   harry.namn = "Hederlige Harrys Bilar";
     harry.betalat = 5000; // 0-5000
+    harry.annans[0].msg="   "
+    harry.annans[0].typ="blink"
 
   KUND anka;
   anka.id=2;
