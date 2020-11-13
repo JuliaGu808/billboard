@@ -154,7 +154,7 @@ void playAdY() //the new ad.
 {
   chooseAd = randomize(2);
   if(chooseAd == 1) adFX(Y1,"blink",true);
-  else if (chooseAd == 2) adFX(Y2,"scroll",false);
+  else if (chooseAd == 2) adFX(Y2,"scroll",true);
 }
 
 void adFX(String message,String textEffect,bool ledEffect)
@@ -220,20 +220,8 @@ void adFX(String message,String textEffect,bool ledEffect)
     {
       if(messageDisplayed==false)
       {
-        if(message.length()>24){
-          lcd.setCursor(16,0);
-          int index=message.lastIndexOf(" ", 24);
-          lcd.print(message.substring(0,index));
-          lcd.setCursor(16, 1);
-          lcd.print(message.substring(index+1));
-        }
-        else{
         lcd.setCursor(16,0);
         lcd.print(message);
-        messageDisplayed=true;
-
-        }
-        
         messageDisplayed=true;
       }
       if(scrollindex == scrollLength)
