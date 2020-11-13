@@ -1,0 +1,7 @@
+﻿  Main.c
+  SafeInput.c
+C:\Users\jonat\source\repos\Brandlarm\Brandlarm\SafeInput.c(84,30): warning C4033: 'main2' must return a value
+  serial.c
+  Generating Code...
+C:\Users\jonat\source\repos\Brandlarm\Brandlarm\SafeInput.c(95): warning C4716: 'main2': must return a value
+  Brandlarm.vcxproj -> C:\Users\jonat\source\repos\Brandlarm\Debug\Brandlarm.exe
