@@ -21,73 +21,6 @@ bool ledOn = false;
 
 const int buzzer = 9; //buzzer to arduino pin 9
 
-
-byte AwithRing[8] = {  //å
-  B00100,
-  B01010,
-  B01110,
-  B00001,
-  B01111,
-  B10001,
-  B01111,
-};
-
-byte AwithDots[8] = {  //ä
-  B01010,
-  B00000,
-  B01110,
-  B00001,
-  B01111,
-  B10001,
-  B01111,
-};
- 
-byte OwithDots[8] = {  //ö
-  B01010,
-  B00000,
-  B01110,
-  B10001,
-  B10001,
-  B10001,
-  B01110,
-};
-
-byte BigAwithRing[8] = {  //Å
-  0b00100,
-  0b01010,
-  0b01110,
-  0b10001,
-  0b11111,
-  0b10001,
-  0b10001,
-  0b00000
-};
-
-byte BigAwithDots[8] = {  //Ä
-  0b01010,
-  0b00000,
-  0b01110,
-  0b10001,
-  0b11111,
-  0b10001,
-  0b10001,
-  0b00000
-};
-
-byte BigOwithDots[8] = {  //Ö
-  0b01010,
-  0b01110,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b01110,
-  0b00000
-};
-
-
-
-
 struct KUND {
   int id;
   String namn;
@@ -138,37 +71,7 @@ void setup() {
   firstkund.id = 0;
   pinMode(led, OUTPUT); 
 pinMode(buzzer, OUTPUT); // Set buzzer - pin 9 as an output
-  createSwe();
-
-//  lcd.createChar(1, AwithRing);     //å
-//  lcd.createChar(2, AwithDots);     //ä
-//  lcd.createChar(3, OwithDots);     //ö
-//  lcd.createChar(4, BigAwithRing);  //Å
-//  lcd.createChar(5, BigAwithDots);  //Ä
-//  lcd.createChar(6, BigOwithDots);  //Ö
-
-//  String mm = "åäö - ÅÄÖ - öäå";
-//  mm.replace("å", "\1");
-//  mm.replace("ä", "\2");
-//  mm.replace("ö", "\3");
-//  mm.replace("Å", "\4");
-//  mm.replace("Ä", "\5");
-//  mm.replace("Ö", "\6");
-// 
-//  lcd.setCursor(0, 1);
-//  lcd.print(mm);
-  
 }
-
-void createSwe(){
-    lcd.createChar(1, AwithRing);     //å
-  lcd.createChar(2, AwithDots);     //ä
-  lcd.createChar(3, OwithDots);     //ö
-  lcd.createChar(4, BigAwithRing);  //Å
-  lcd.createChar(5, BigAwithDots);  //Ä
-  lcd.createChar(6, BigOwithDots);  //Ö
-}
-
 
 void createKundlist(){
    KUND harry;
@@ -259,16 +162,6 @@ void playAdY() //the new ad.
 
 void adFX(String message,String textEffect,bool ledEffect)
 {
-//  message.replace("å", "\1");
-//  message.replace("ä", "\2");
-//  message.replace("ö", "\3");
-//  message.replace("Å", "\4");
-//  message.replace("Ä", "\5");
-//  message.replace("Ö", "\6");
-//  // lcd.setCursor(0, 1);
-//  lcd.print(message);
-
-  
   digitalWrite(led, LOW);
   ledOn = false;
   bool messagePrinted = false;
@@ -466,9 +359,6 @@ void loop() {
 //  athinaScrollMessage("hello world 3");
 //  delay(3000);
 
-
-
-
   char inChar;
   char inData[30];
   int charIndex=0;
@@ -549,7 +439,6 @@ void loop() {
         break;
       case 5:
         playIOT();
-        createSwe();
         break;
       case 6:
         playAdY();
@@ -569,7 +458,6 @@ void loop() {
     delay(1000);        // ...for 1 sec
     noTone(buzzer);     // Stop sound...
     delay(1000);        // ...for 1sec
-    //inData[0]='a';
   }
   
 }
