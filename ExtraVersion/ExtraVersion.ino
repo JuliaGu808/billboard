@@ -219,6 +219,7 @@ void adFX(String message,String textEffect,bool ledEffect)
       }
     }
 //scrollMessage
+
     else if (textEffect == "scroll")
     {
       if(messageDisplayed==false)
@@ -242,6 +243,53 @@ void adFX(String message,String textEffect,bool ledEffect)
         scrollindex++;
       }
     }
+
+
+//  else if (textEffect == "scroll"){
+//      if (messageDisplayed == false ){
+//        message=message+" *** ";
+//      }
+//      if (millis() > scrollMessageTimer + 300 || messageDisplayed == false)
+//      {
+//        lcd.clear();
+//        lcd.setCursor(0,0); 
+//        if (message.length()-scrollindex<15){
+//          lcd.print(message.substring(scrollindex,message.length()));
+//          if (message.length()-scrollindex+1>0){
+//            lcd.setCursor(message.length()-scrollindex,0);
+//            lcd.print(message.substring(0,16-(message.length()-scrollindex)));
+//          }
+//          else break;
+//        }
+//        else
+//          lcd.print(message.substring(scrollindex,scrollindex+16));
+//        scrollindex++;
+//        if (scrollindex==message.length()) scrollindex=0;
+//        scrollMessageTimer=millis();
+//        messageDisplayed =true;
+//      }
+//  }
+
+
+
+//  else if (textEffect == "scroll"){
+//      if (messageDisplayed == false ){
+//        message="               "+message;
+//      }
+//      if (millis() > scrollMessageTimer + 300 || messageDisplayed == false)
+//      {
+//            lcd.clear();
+//            lcd.setCursor(0,0);
+//            //lcd.print(message.substring(scrollindex));
+//            if (scrollindex+16>message.length())    lcd.print(message.substring(scrollindex,message.length()));
+//            else    lcd.print(message.substring(scrollindex,scrollindex+16));
+//            scrollindex++;
+//            if (scrollindex==message.length()) scrollindex=0;
+//            scrollMessageTimer=millis();
+//            messageDisplayed =true;
+//      }
+//    }
+
   }
 }
 
